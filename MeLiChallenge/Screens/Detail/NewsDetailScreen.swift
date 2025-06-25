@@ -8,17 +8,13 @@
 import SwiftUI
 
 struct NewsDetailScreen: View {
-    @StateObject var viewModel: NewsDetailViewModel
-    
-    init(model: NewsModel) {
-        _viewModel = StateObject(wrappedValue: .init(model: model))
-    }
+    var model: NewsModel
     
     var body: some View {
         ScrollView {
-            Text(viewModel.model.title)
+            Text(model.title)
             
-            // TODO: Add loading sections to display more info
+            // TODO: Add more info
         }
         .navigationTitle("TODO")
     }
