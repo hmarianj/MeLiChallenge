@@ -1,10 +1,7 @@
 import Foundation
 
-/// The HTTPClient class.
 final class HTTPClient {
-    /// The shared instance.
     static let shared = HTTPClient()
-    /// Replace the default JSONDecoder if necessary.
     var jsonDecoder: JSONDecoder = JSONDecoder()
 
     /// Executes a request asynchronously and returns a response, or throws an error.
@@ -39,8 +36,8 @@ final class HTTPClient {
             throw Errors.unexpectedStatusCode
         }
     }
-    
-    func urlRequest(
+
+    private func urlRequest(
         urlString: String,
         method: HttpMethod,
         headers: [String: String] = [:]
