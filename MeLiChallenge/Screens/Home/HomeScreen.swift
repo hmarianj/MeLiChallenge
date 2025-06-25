@@ -11,7 +11,7 @@ struct HomeScreen: View {
     @StateObject var viewModel = HomeViewModel()
     
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $viewModel.navigationPath) {
             ScrollView {
                 if let searchResult = viewModel.searchResult {
                     loadedView(searchResult: searchResult)
@@ -25,6 +25,12 @@ struct HomeScreen: View {
             }
             .navigationTitle("Space News")
             .searchable(text: $viewModel.searchText)
+            .navigationDestination(for: HomeNavigationPath.self) { route in
+                switch route {
+                case let .newsDetail(newsModel):
+                    NewsDetailScreen(model: newsModel)
+                }
+            }
         }
     }
     
@@ -62,6 +68,9 @@ private extension HomeScreen {
             VStack(spacing: 8) {
                 ForEach(searchResult.results, id: \.id) { result in
                     Text(result.title)
+                        .onTapGesture {
+                            viewModel.navigationPath.append(.newsDetail(result))
+                        }
                     Divider()
                 }
             }

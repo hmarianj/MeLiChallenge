@@ -13,6 +13,7 @@ final class HomeViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var error: Error?
     @Published var searchText: String = ""
+    @Published var navigationPath: [HomeNavigationPath] = []
     
     private let searchService: SearchService
     
@@ -32,4 +33,8 @@ final class HomeViewModel: ObservableObject {
     }
     
     // TODO: Observe search text + debouncer
+}
+
+enum HomeNavigationPath: Hashable {
+    case newsDetail(NewsModel)
 }
