@@ -21,7 +21,7 @@ final class HomeViewModel: ObservableObject {
         self.searchService = searchService
     }
     
-    func search(query: String) async {
+    func search(query: String?) async {
         defer { isLoading = false }
         do {
             error = nil

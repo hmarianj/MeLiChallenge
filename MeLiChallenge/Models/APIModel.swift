@@ -5,14 +5,23 @@
 //  Created by MH on 25/06/2025.
 //
 
+import Foundation
+
 struct SearchResult: Codable {
-    var count: Int // TODO: mostrar en la UI
-    var results: [NewsModel]
-    // TODO: Add the rest of the fields
+    let count: Int
+    let results: [NewsModel]
+    // TODO: Support pagination
 }
 
 struct NewsModel: Codable, Hashable {
-    var id: Int
-    var title: String
-    // TODO: Complete more info
+    let id: Int
+    let title: String
+    let authors: [Author]
+    let imageUrl: String
+    let publishedAt: Date
+    let summary: String
+}
+
+struct Author: Codable, Equatable, Hashable {
+    let name: String
 }

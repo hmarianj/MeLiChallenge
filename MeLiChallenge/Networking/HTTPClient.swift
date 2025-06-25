@@ -3,6 +3,11 @@ import Foundation
 final class HTTPClient {
     static let shared = HTTPClient()
     var jsonDecoder: JSONDecoder = JSONDecoder()
+    
+    init() {
+        jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+        jsonDecoder.dateDecodingStrategy = .iso8601
+    }
 
     /// Executes a request asynchronously and returns a response, or throws an error.
     func execute<Response: Decodable>(
@@ -12,6 +17,10 @@ final class HTTPClient {
         responseType: Response.Type
     ) async throws -> Response {
         let request = urlRequest(urlString: urlString, method: method, headers: headers)
+        print("""
+        ===> Network Request started:
+        URL: \(request.url?.absoluteString ?? "")
+        """)
         let (data, response) = try await URLSession.shared.data(
             for: request,
             delegate: nil
@@ -20,6 +29,12 @@ final class HTTPClient {
         guard let response = response as? HTTPURLResponse else {
             throw Errors.noResponse
         }
+        print("""
+        <=== Network Response received:
+        Code: \(response.statusCode)
+        URL: \(request.url?.absoluteString ?? "")
+        JSON: \(data.prettyPrintedJSONString)
+        """)
 
         switch response.statusCode {
         case 200...299:
@@ -85,6 +100,33 @@ enum HttpMethod: Equatable {
         case .put: return "PUT"
         case .post: return "POST"
         case .patch: return "PATCH"
+        }
+    }
+}
+
+// TODO: Move
+
+extension Data {
+    var prettyPrintedJSONString: NSString {
+        guard let object = try? JSONSerialization.jsonObject(with: self, options: []),
+              let data = try? JSONSerialization.data(withJSONObject: object, options: [.prettyPrinted]),
+              var prettyPrintedString = String(data: data, encoding: .utf8) else {
+            return ""
+        }
+
+        prettyPrintedString = prettyPrintedString.replacingOccurrences(of: "\\/", with: "/")
+        return prettyPrintedString as NSString
+    }
+}
+
+extension Dictionary where Key == String, Value == Any {
+    func toJSONData() -> Data? {
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: self, options: [.prettyPrinted])
+            return jsonData
+        } catch {
+            print("Error converting dictionary to JSON data: \(error.localizedDescription)")
+            return nil
         }
     }
 }

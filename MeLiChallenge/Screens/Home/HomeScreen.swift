@@ -23,6 +23,9 @@ struct HomeScreen: View {
                     initialView
                 }
             }
+            .task {
+                await viewModel.search(query: nil)
+            }
             .navigationTitle("Space News")
             .searchable(text: $viewModel.searchText)
             .navigationDestination(for: HomeNavigationPath.self) { route in
@@ -33,13 +36,6 @@ struct HomeScreen: View {
             }
         }
     }
-    
-    // TODO: Remove this, is here just for testing temporarily
-    func getData() {
-        Task {
-            await viewModel.search(query: "NASA")
-        }
-    }
 }
 
 private extension HomeScreen {
@@ -47,9 +43,7 @@ private extension HomeScreen {
     var initialView: some View {
         VStack {
             Text("Initial State")
-            Button("Search") {
-                getData()
-            }
+            
         }
     }
     
