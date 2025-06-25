@@ -13,10 +13,10 @@ struct HomeScreen: View {
     var body: some View {
         NavigationStack(path: $viewModel.navigationPath) {
             ScrollView {
-                if let searchResult = viewModel.searchResult {
-                    loadedView(searchResult: searchResult)
-                } else if viewModel.isLoading {
+                if viewModel.isLoading {
                     loadingView
+                } else if let news = viewModel.loadedNews {
+                    loadedView(news: news)
                 } else if viewModel.error != nil {
                     errorView
                 } else {
@@ -43,7 +43,6 @@ private extension HomeScreen {
     var initialView: some View {
         VStack {
             Text("Initial State")
-            
         }
     }
     
@@ -53,17 +52,20 @@ private extension HomeScreen {
     }
     
     @ViewBuilder
-    func loadedView(searchResult: SearchResult) -> some View {
-        if searchResult.results.isEmpty {
+    func loadedView(news: [NewsModel]) -> some View {
+        if news.isEmpty {
             // TODO: Empty State
             Text("No results")
         } else {
             // TODO: Real cell + Navigation
-            VStack(spacing: 8) {
-                ForEach(searchResult.results, id: \.id) { result in
-                    Text(result.title)
+            LazyVStack(spacing: 8) {
+                ForEach(news, id: \.id) { newsModel in
+                    Text(newsModel.title)
                         .onTapGesture {
-                            viewModel.navigationPath.append(.newsDetail(result))
+                            viewModel.navigationPath.append(.newsDetail(newsModel))
+                        }
+                        .task {
+                            await viewModel.loadNextPageIfNeeded(currentItem: newsModel)
                         }
                     Divider()
                 }

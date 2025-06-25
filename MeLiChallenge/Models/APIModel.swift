@@ -10,10 +10,9 @@ import Foundation
 struct SearchResult: Codable {
     let count: Int
     let results: [NewsModel]
-    // TODO: Support pagination
 }
 
-struct NewsModel: Codable, Hashable {
+struct NewsModel: Codable, Hashable, Identifiable {
     let id: Int
     let title: String
     let authors: [Author]

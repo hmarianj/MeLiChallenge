@@ -1,24 +1,29 @@
 import Foundation
 
 protocol SearchService {
-    func search(query: String?) async throws -> SearchResult
+    func search(query: String?, size: Int, offset: Int) async throws -> SearchResult
 }
 
 struct SpaceNewsSearchService: SearchService {
-    func search(query: String?) async throws -> SearchResult {
+    func search(query: String?, size: Int, offset: Int) async throws -> SearchResult {
         try await HTTPClient.shared.execute(
             urlString: "https://api.spaceflightnewsapi.net/v4/articles/",
             method: .get(
-                buildQueryParams(searchQuery: query)
+                buildQueryParams(searchQuery: query, size: size, offset: offset)
             ),
             responseType: SearchResult.self
         )
     }
     
-    private func buildQueryParams(searchQuery: String?) -> [URLQueryItem] {
+    private func buildQueryParams(
+        searchQuery: String?,
+        size: Int,
+        offset: Int
+    ) -> [URLQueryItem] {
         var items: [URLQueryItem] = [
             .init(name: "format", value: "json"),
-            .init(name: "limit", value: "10"),
+            .init(name: "limit", value: size.description),
+            .init(name: "offset", value: offset.description),
         ]
         if let searchQuery, !searchQuery.isEmpty {
             items.append(.init(name: "search", value: searchQuery))
