@@ -18,7 +18,7 @@ final class HomeViewModel: ObservableObject {
     @Published var navigationPath: [HomeNavigationPath] = []
     
     private var currentOffset: Int = 0
-    private let pageSize: Int = 10
+    private let pageSize: Int = 20
     private var totalCount: Int = 0
     
     private let searchService: SearchService
@@ -41,7 +41,7 @@ final class HomeViewModel: ObservableObject {
         currentOffset = 0
         totalCount = 0
         loadedNews = []
-
+        
         do {
             let result = try await searchService.search(query: query, size: pageSize, offset: currentOffset)
             loadedNews = result.results
@@ -50,26 +50,34 @@ final class HomeViewModel: ObservableObject {
         } catch {
             self.error = error
         }
-
+        
         isLoading = false
     }
     
     func loadNextPageIfNeeded(currentItem: NewsModel) async {
-        guard !isPaginating,
-              hasMorePages,
-              let loadedNews,
-              currentItem.id == loadedNews.last?.id else {
+        guard !isPaginating, hasMorePages, let loadedNews else {
             return
         }
-
+        
+        let thresholdIndex = loadedNews.index(loadedNews.endIndex, offsetBy: -5, limitedBy: loadedNews.startIndex) ?? loadedNews.startIndex
+        
+        // TODO: Recheck this logic
+        if let currentIndex = loadedNews.firstIndex(where: { $0.id == currentItem.id }), currentIndex >= thresholdIndex {
+            await loadNextPage()
+        }
+    }
+    
+    private func loadNextPage() async {
         isPaginating = true
         defer { isPaginating = false }
 
         do {
             let result = try await searchService.search(query: searchText, size: pageSize, offset: currentOffset)
-            let existingIDs = Set(loadedNews.map { $0.id })
+
+            let existingIDs = Set(loadedNews?.map { $0.id } ?? [])
             let newItems = result.results.filter { !existingIDs.contains($0.id) }
-            self.loadedNews?.append(contentsOf: newItems)
+            
+            loadedNews?.append(contentsOf: newItems)
             currentOffset += result.results.count
         } catch {
             self.error = error
@@ -84,6 +92,7 @@ private extension HomeViewModel {
             .removeDuplicates()
             .sink { [weak self] newValue in
                 guard let self else { return }
+                // TODO: Fix the bug where this is called twice the first time
                 Task {
                     await self.search(query: newValue)
                 }
