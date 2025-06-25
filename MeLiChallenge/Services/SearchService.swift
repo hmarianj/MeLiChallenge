@@ -20,7 +20,7 @@ struct SpaceNewsSearchService: SearchService {
             .init(name: "format", value: "json"),
             .init(name: "limit", value: "10"),
         ]
-        if let searchQuery {
+        if let searchQuery, !searchQuery.isEmpty {
             items.append(.init(name: "search", value: searchQuery))
         }
         return items

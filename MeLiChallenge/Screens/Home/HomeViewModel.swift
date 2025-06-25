@@ -5,6 +5,7 @@
 //  Created by MH on 25/06/2025.
 //
 
+import Combine
 import Foundation
 
 @MainActor
@@ -16,9 +17,11 @@ final class HomeViewModel: ObservableObject {
     @Published var navigationPath: [HomeNavigationPath] = []
     
     private let searchService: SearchService
+    private var cancellables: [AnyCancellable] = []
     
     init(searchService: SearchService = SpaceNewsSearchService()) {
         self.searchService = searchService
+        setUpSubscribers()
     }
     
     func search(query: String?) async {
@@ -31,8 +34,21 @@ final class HomeViewModel: ObservableObject {
             self.error = error
         }
     }
-    
-    // TODO: Observe search text + debouncer
+}
+
+private extension HomeViewModel {
+    func setUpSubscribers() {
+        $searchText
+            .debounce(for: .seconds(1), scheduler: RunLoop.main)
+            .removeDuplicates()
+            .sink { [weak self] newValue in
+                guard let self else { return }
+                Task {
+                    await self.search(query: newValue)
+                }
+            }
+            .store(in: &cancellables)
+    }
 }
 
 enum HomeNavigationPath: Hashable {
