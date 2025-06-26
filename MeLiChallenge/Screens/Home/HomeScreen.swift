@@ -57,10 +57,13 @@ private extension HomeScreen {
             // TODO: Empty State
             Text("No results")
         } else {
-            // TODO: Real cell + Navigation
             LazyVStack(spacing: 8) {
+                Text("Articles")
+                    .font(.system(.title2, weight: .semibold))
+                    .padding()
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 ForEach(news, id: \.id) { newsModel in
-                    Text(newsModel.title)
+                    VerticalCardView(model: newsModel)
                         .onTapGesture {
                             viewModel.navigationPath.append(.newsDetail(newsModel))
                         }
@@ -69,6 +72,7 @@ private extension HomeScreen {
                         }
                     Divider()
                 }
+                .padding(.horizontal, 16)
             }
         }
     }
