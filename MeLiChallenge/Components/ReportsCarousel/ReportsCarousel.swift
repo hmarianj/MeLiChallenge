@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct ReportsCarousel: View {
-    @StateObject var viewModel: ReportsCarouselViewModel = ReportsCarouselViewModel()
+    @StateObject private var viewModel: ReportsCarouselViewModel = ReportsCarouselViewModel()
+    var onReportTap: (NewsModel) -> Void
     
     var body: some View {
         Group {
@@ -45,7 +46,7 @@ struct ReportsCarousel: View {
                 LazyHStack(spacing: 8) {
                     ForEach(reports, id: \.uniqueIdentifier) { report in
                         Button {
-                            print("TODO: PUSH")
+                            onReportTap(report)
                         } label: {
                             HorizontalCardView(model: report)
                         }

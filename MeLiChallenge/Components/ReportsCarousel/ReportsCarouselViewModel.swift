@@ -21,6 +21,7 @@ final class ReportsCarouselViewModel: ObservableObject {
     }
     
     func loadReports() async {
+        if reports != nil { return }
         do {
             isLoading = true
             error = nil

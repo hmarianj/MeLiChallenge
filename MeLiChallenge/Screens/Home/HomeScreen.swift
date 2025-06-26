@@ -14,9 +14,7 @@ struct HomeScreen: View {
     var body: some View {
         NavigationStack(path: $viewModel.navigationPath) {
             ScrollView {
-                if !isSearching {
-                    ReportsCarousel()
-                }
+                reportsSection
                 articlesSection
             }
             .navigationTitle("Space News")
@@ -32,6 +30,15 @@ struct HomeScreen: View {
 }
 
 private extension HomeScreen {
+    @ViewBuilder
+    var reportsSection: some View {
+        if !isSearching {
+            ReportsCarousel(onReportTap: { report in
+                viewModel.navigationPath.append(.newsDetail(report))
+            })
+        }
+    }
+    
     @ViewBuilder
     var articlesSection: some View {
         if viewModel.isFirstLoading {
