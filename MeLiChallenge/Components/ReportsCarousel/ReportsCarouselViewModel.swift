@@ -32,6 +32,7 @@ final class ReportsCarouselViewModel: ObservableObject {
             }
         } catch {
             self.error = error
+            isLoading = false
         }
     }
 }
