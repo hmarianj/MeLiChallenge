@@ -13,7 +13,11 @@ struct SpaceNewsReportService: ReportService {
     func getReports() async throws -> SearchResult {
         try await HTTPClient.shared.execute(
             urlString: "https://api.spaceflightnewsapi.net/v4/reports/",
-            method: .get([.init(name: "format", value: "json")]),
+            method: .get(nil),
+            headers: [
+                "Accept": "application/json",
+                "User-Agent": "iOSApp/1.0"
+            ],
             responseType: SearchResult.self
         )
     }

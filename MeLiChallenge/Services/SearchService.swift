@@ -11,6 +11,10 @@ struct SpaceNewsSearchService: SearchService {
             method: .get(
                 buildQueryParams(searchQuery: query, size: size, offset: offset)
             ),
+            headers: [
+                "Accept": "application/json",
+                "User-Agent": "iOSApp/1.0"
+            ],
             responseType: SearchResult.self
         )
     }
@@ -21,7 +25,6 @@ struct SpaceNewsSearchService: SearchService {
         offset: Int
     ) -> [URLQueryItem] {
         var items: [URLQueryItem] = [
-            .init(name: "format", value: "json"),
             .init(name: "limit", value: size.description),
             .init(name: "offset", value: offset.description),
         ]

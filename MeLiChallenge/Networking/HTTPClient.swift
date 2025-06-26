@@ -89,7 +89,7 @@ final class HTTPClient {
 }
 
 enum HttpMethod: Equatable {
-    case get([URLQueryItem])
+    case get([URLQueryItem]?)
     case put(Data?)
     case post(Data?)
     case patch
