@@ -8,23 +8,19 @@
 import SwiftUI
 
 struct HomeScreen: View {
-    @StateObject var viewModel = HomeViewModel()
+    @StateObject private var viewModel = HomeViewModel()
+    @State private var isSearching: Bool = false
     
     var body: some View {
         NavigationStack(path: $viewModel.navigationPath) {
             ScrollView {
-                if viewModel.isFirstLoading {
-                    loadingView
-                } else if let news = viewModel.loadedNews {
-                    loadedView(news: news)
-                } else if viewModel.error != nil {
-                    errorView
-                } else {
-                    initialView
+                if !isSearching {
+                    ReportsCarousel()
                 }
+                articlesSection
             }
             .navigationTitle("Space News")
-            .searchable(text: $viewModel.searchText)
+            .searchable(text: $viewModel.searchText, isPresented: $isSearching)
             .navigationDestination(for: HomeNavigationPath.self) { route in
                 switch route {
                 case let .newsDetail(newsModel):
@@ -36,16 +32,26 @@ struct HomeScreen: View {
 }
 
 private extension HomeScreen {
-    // TODO: Implement a Initial View
-    var initialView: some View {
-        VStack {
-            Text("Initial State")
+    @ViewBuilder
+    var articlesSection: some View {
+        if viewModel.isFirstLoading {
+            loadingView
+        } else if let news = viewModel.loadedNews {
+            loadedView(news: news)
+        } else if viewModel.error != nil {
+            errorView
+        } else {
+            EmptyView()
         }
     }
     
     var loadingView: some View {
-        // TODO: ProgressView custom
-        ProgressView()
+        loadedView(news: [
+            .mock(id: 0),
+            .mock(id: 1),
+            .mock(id: 2)
+        ])
+        .redacted(reason: .placeholder) // Skeleton loading
     }
     
     @ViewBuilder
@@ -55,10 +61,12 @@ private extension HomeScreen {
             Text("No results")
         } else {
             LazyVStack(spacing: 8) {
-                Text("Articles")
-                    .font(.system(.title2, weight: .semibold))
-                    .padding()
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                if !isSearching {
+                    Text("Articles")
+                        .font(.system(.title2, weight: .semibold))
+                        .padding()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
                 ForEach(news, id: \.uniqueIdentifier) { newsModel in
                     Button {
                         viewModel.navigationPath.append(.newsDetail(newsModel))

@@ -29,3 +29,23 @@ struct NewsModel: Codable, Hashable, Identifiable {
 struct Author: Codable, Equatable, Hashable {
     let name: String
 }
+
+extension NewsModel {
+    static func mock(
+        id: Int = 0,
+        title: String = "Some Title",
+        authors: [Author] = [.init(name: "Mock Author")],
+        imageUrl: String = "https://example.com/image.jpg",
+        publishedAt: Date = .now,
+        summary: String = "Some summary"
+    ) -> NewsModel {
+        NewsModel(
+            id: id,
+            title: title,
+            authors: authors,
+            imageUrl: imageUrl,
+            publishedAt: publishedAt,
+            summary: summary
+        )
+    }
+}
