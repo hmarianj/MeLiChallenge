@@ -11,8 +11,8 @@ import Foundation
 @MainActor
 final class HomeViewModel: ObservableObject {
     @Published var loadedNews: [NewsModel]?
-    @Published var isPaginating: Bool = false
-    @Published var isLoading: Bool = false
+    @Published var isLoadingNextPage: Bool = false
+    @Published var isFirstLoading: Bool = false
     @Published var error: Error?
     @Published var searchText: String = ""
     @Published var navigationPath: [HomeNavigationPath] = []
@@ -35,8 +35,8 @@ final class HomeViewModel: ObservableObject {
     }
     
     func search(query: String?) async {
-        guard !isLoading else { return }
-        isLoading = true
+        guard !isFirstLoading else { return }
+        isFirstLoading = true
         error = nil
         currentOffset = 0
         totalCount = 0
@@ -51,33 +51,24 @@ final class HomeViewModel: ObservableObject {
             self.error = error
         }
         
-        isLoading = false
+        isFirstLoading = false
     }
     
-    func loadNextPageIfNeeded(currentItem: NewsModel) async {
-        guard !isPaginating, hasMorePages, let loadedNews else {
+    func loadNextPageIfNeeded() async {
+        guard !isLoadingNextPage, hasMorePages else {
             return
         }
         
-        let thresholdIndex = loadedNews.index(loadedNews.endIndex, offsetBy: -5, limitedBy: loadedNews.startIndex) ?? loadedNews.startIndex
-        
-        // TODO: Recheck this logic
-        if let currentIndex = loadedNews.firstIndex(where: { $0.id == currentItem.id }), currentIndex >= thresholdIndex {
-            await loadNextPage()
-        }
+        await loadNextPage()
     }
     
     private func loadNextPage() async {
-        isPaginating = true
-        defer { isPaginating = false }
+        isLoadingNextPage = true
+        defer { isLoadingNextPage = false }
 
         do {
             let result = try await searchService.search(query: searchText, size: pageSize, offset: currentOffset)
-
-            let existingIDs = Set(loadedNews?.map { $0.id } ?? [])
-            let newItems = result.results.filter { !existingIDs.contains($0.id) }
-            
-            loadedNews?.append(contentsOf: newItems)
+            loadedNews?.append(contentsOf: result.results)
             currentOffset += result.results.count
         } catch {
             self.error = error

@@ -13,7 +13,7 @@ struct HomeScreen: View {
     var body: some View {
         NavigationStack(path: $viewModel.navigationPath) {
             ScrollView {
-                if viewModel.isLoading {
+                if viewModel.isFirstLoading {
                     loadingView
                 } else if let news = viewModel.loadedNews {
                     loadedView(news: news)
@@ -62,17 +62,22 @@ private extension HomeScreen {
                     .font(.system(.title2, weight: .semibold))
                     .padding()
                     .frame(maxWidth: .infinity, alignment: .leading)
-                ForEach(news, id: \.id) { newsModel in
+                ForEach(news, id: \.uniqueIdentifier) { newsModel in
                     VerticalCardView(model: newsModel)
                         .onTapGesture {
                             viewModel.navigationPath.append(.newsDetail(newsModel))
                         }
-                        .task {
-                            await viewModel.loadNextPageIfNeeded(currentItem: newsModel)
-                        }
                     Divider()
                 }
                 .padding(.horizontal, 16)
+                
+                if viewModel.hasMorePages {
+                    ProgressView()
+                        .frame(height: 60)
+                        .task {
+                            await viewModel.loadNextPageIfNeeded()
+                        }
+                }
             }
         }
     }

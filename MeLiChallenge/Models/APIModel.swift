@@ -19,6 +19,11 @@ struct NewsModel: Codable, Hashable, Identifiable {
     let imageUrl: String
     let publishedAt: Date
     let summary: String
+    
+    // Given there are models with the same id, this identifier disambiguates.
+    var uniqueIdentifier: String {
+        "\(id)-\(title)-\(publishedAt.description)-\(summary)"
+    }
 }
 
 struct Author: Codable, Equatable, Hashable {
