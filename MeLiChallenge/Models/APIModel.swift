@@ -35,7 +35,7 @@ extension NewsModel {
         id: Int = 0,
         title: String = "Some Title",
         authors: [Author] = [.init(name: "Mock Author")],
-        imageUrl: String = "https://example.com/image.jpg",
+        imageUrl: String = "https://www.nasa.gov/wp-content/uploads/2025/06/nasa-astronaut-nicole-ayers-on-iss-june-25-advisory.jpg",
         publishedAt: Date = .now,
         summary: String = "Some summary"
     ) -> NewsModel {

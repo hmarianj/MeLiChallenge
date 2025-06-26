@@ -9,6 +9,7 @@ import SwiftUI
 
 struct NewsDetailScreen: View {
     var model: NewsModel
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         ScrollView {
@@ -22,6 +23,25 @@ struct NewsDetailScreen: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .ignoresSafeArea(edges: .top)
+        .navigationBarBackButtonHidden()
+        .overlay(alignment: .topLeading) {
+            Button {
+                dismiss()
+            } label: {
+                // TODO: Fix the UI of this button
+                ZStack {
+                    Circle()
+                        .frame(width: 44, height: 44)
+                        .foregroundStyle(Color.white)
+                        .shadow(radius: 4)
+                    Image(systemName: "chevron.left")
+                        .resizable()
+                        .frame(width: 24, height: 24)
+                        .foregroundStyle(.ligthBlue)
+                }
+                .padding()
+            }
+        }
     }
 }
 
