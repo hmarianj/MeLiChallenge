@@ -17,6 +17,7 @@ struct HomeScreen: View {
                 reportsSection
                 articlesSection
             }
+            .scrollIndicators(.hidden)
             .navigationTitle("Space News")
             .searchable(text: $viewModel.searchText, isPresented: $isSearching)
             .navigationDestination(for: HomeNavigationPath.self) { route in

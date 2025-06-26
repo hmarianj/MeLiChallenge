@@ -54,6 +54,7 @@ struct ReportsCarousel: View {
                     }
                 }
             }
+            .scrollIndicators(.hidden)
         }
     }
 }

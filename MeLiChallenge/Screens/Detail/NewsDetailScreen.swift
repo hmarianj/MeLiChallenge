@@ -21,6 +21,7 @@ struct NewsDetailScreen: View {
                 summaryView
             }
         }
+        .scrollIndicators(.hidden)
         .frame(maxWidth: .infinity, alignment: .leading)
         .ignoresSafeArea(edges: .top)
         .navigationBarBackButtonHidden()
