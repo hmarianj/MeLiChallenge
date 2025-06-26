@@ -9,6 +9,10 @@ import SwiftUI
 
 @main
 struct MeLiChallengeApp: App {
+    init() {
+        configureImageCache()
+    }
+    
     var body: some Scene {
         WindowGroup {
             HomeScreen()

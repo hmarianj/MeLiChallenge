@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import NukeUI
 import SwiftUI
 
 struct ImageArticleView: View {
@@ -13,16 +14,19 @@ struct ImageArticleView: View {
     var style: ImageArticleStyle
     
     var body: some View {
-        AsyncImage(url: URL(string: model.imageUrl)) { image in
-            image
-                .resizable()
-                .aspectRatio(contentMode: style.contentMode)
-                .frame(width: style.size.width, height: style.size.height)
-                .cornerRadius(style.cornerRadius)
-        } placeholder: {
-            ProgressView()
-                .frame(width: style.size.width, height: style.size.height)
+        LazyImage(url: URL(string: model.imageUrl)) { state in
+            if let image = state.image {
+                image
+                    .resizable()
+                    .aspectRatio(contentMode: style.contentMode)
+            } else if state.error != nil {
+                Color.gray
+            } else {
+                ProgressView()
+            }
         }
+        .frame(width: style.size.width, height: style.size.height)
+        .cornerRadius(style.cornerRadius)
     }
 }
 
