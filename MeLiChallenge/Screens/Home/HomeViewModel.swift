@@ -27,6 +27,9 @@ final class HomeViewModel: ObservableObject {
     init(searchService: SearchService = SpaceNewsSearchService()) {
         self.searchService = searchService
         setUpSubscribers()
+        Task {
+            await self.search(query: nil)
+        }
     }
     
     var hasMorePages: Bool {
@@ -61,8 +64,24 @@ final class HomeViewModel: ObservableObject {
         
         await loadNextPage()
     }
+}
+
+private extension HomeViewModel {
+    func setUpSubscribers() {
+        $searchText
+            .debounce(for: .seconds(1), scheduler: RunLoop.main)
+            .removeDuplicates()
+            .dropFirst()
+            .sink { [weak self] newValue in
+                guard let self else { return }
+                Task {
+                    await self.search(query: newValue)
+                }
+            }
+            .store(in: &cancellables)
+    }
     
-    private func loadNextPage() async {
+    func loadNextPage() async {
         isLoadingNextPage = true
         defer { isLoadingNextPage = false }
 
@@ -73,22 +92,6 @@ final class HomeViewModel: ObservableObject {
         } catch {
             self.error = error
         }
-    }
-}
-
-private extension HomeViewModel {
-    func setUpSubscribers() {
-        $searchText
-            .debounce(for: .seconds(1), scheduler: RunLoop.main)
-            .removeDuplicates()
-            .sink { [weak self] newValue in
-                guard let self else { return }
-                // TODO: Fix the bug where this is called twice the first time
-                Task {
-                    await self.search(query: newValue)
-                }
-            }
-            .store(in: &cancellables)
     }
 }
 

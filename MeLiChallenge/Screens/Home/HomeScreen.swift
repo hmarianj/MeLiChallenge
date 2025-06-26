@@ -23,9 +23,6 @@ struct HomeScreen: View {
                     initialView
                 }
             }
-            .task {
-                await viewModel.search(query: nil)
-            }
             .navigationTitle("Space News")
             .searchable(text: $viewModel.searchText)
             .navigationDestination(for: HomeNavigationPath.self) { route in
@@ -63,10 +60,12 @@ private extension HomeScreen {
                     .padding()
                     .frame(maxWidth: .infinity, alignment: .leading)
                 ForEach(news, id: \.uniqueIdentifier) { newsModel in
-                    VerticalCardView(model: newsModel)
-                        .onTapGesture {
-                            viewModel.navigationPath.append(.newsDetail(newsModel))
-                        }
+                    Button {
+                        viewModel.navigationPath.append(.newsDetail(newsModel))
+                    } label: {
+                        VerticalCardView(model: newsModel)
+                    }
+                    .buttonStyle(.plain)
                     Divider()
                 }
                 .padding(.horizontal, 16)

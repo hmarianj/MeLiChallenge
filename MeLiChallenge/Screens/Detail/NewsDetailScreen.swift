@@ -14,7 +14,7 @@ struct NewsDetailScreen: View {
         ScrollView {
             VStack(spacing: 12) {
                 ImageArticleView(model: model, style: ImageArticleStyle.detailsCard)
-                datePostView
+                DateArticleView(model: model)
                 TitleArticleView(model: model, style: TitleArticleStyle.titleLarge)
                 AuthorsView(model: model)
                 summaryView
@@ -26,14 +26,6 @@ struct NewsDetailScreen: View {
 }
 
 private extension NewsDetailScreen {
-    
-    var datePostView: some View {
-        Text("04 Abril, 2025")
-            .font(.subheadline)
-            .foregroundStyle(Color.gray.opacity(0.8)) // TODO: create color
-            .frame(maxWidth: .infinity, alignment: .trailing)
-    }
-    
     var summaryView: some View {
         Text(model.summary) // TODO: add styles
     }
