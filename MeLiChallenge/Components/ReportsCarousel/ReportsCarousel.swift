@@ -15,10 +15,10 @@ struct ReportsCarousel: View {
         Group {
             if viewModel.isLoading {
                 loadingView
-            } else if let reports = viewModel.reports {
-                reportsView(reports: reports)
             } else if viewModel.error != nil {
                 EmptyView() // If there is an error, we hide the carousel
+            } else if let reports = viewModel.reports {
+                reportsView(reports: reports)
             } else {
                 HStack{} // Just here as the initial state
             }
@@ -43,7 +43,7 @@ struct ReportsCarousel: View {
             EmptyView()
         } else {
             ScrollView(.horizontal) {
-                LazyHStack(spacing: 8) {
+                LazyHStack(spacing: 12) {
                     ForEach(reports, id: \.uniqueIdentifier) { report in
                         Button {
                             onReportTap(report)
@@ -53,6 +53,7 @@ struct ReportsCarousel: View {
                         .buttonStyle(.plain)
                     }
                 }
+                .padding(.horizontal)
             }
             .scrollIndicators(.hidden)
         }

@@ -13,64 +13,32 @@ struct VerticalCardView: View {
     
     var body: some View {
         VStack(spacing: 12) {
-            HStack(spacing: 16) {
+            HStack(alignment: .top, spacing: 16) {
                 ImageArticleView(model: model, style: ImageArticleStyle.verticalCard)
-                VStack(alignment: .leading, spacing: 4) {
-                    TitleArticleView(model: model, style: TitleArticleStyle.titleSmall)
-                    HStack {
+                VStack(alignment: .leading, spacing: 6) {
+                    TitleArticleView(model: model, style: TitleArticleStyle.titleSmall, color: .blackText)
+                        .lineLimit(3)
+                    Spacer()
+                    HStack(alignment: .center) {
                         AuthorsView(model: model)
                         Spacer()
-                        DateArticleView(model: model)
+                        DateArticleView(model: model, color: .gray)
                     }
                 }
             }
         }
-        .background(Color.white)
+        .padding(.vertical, 4)
         .cornerRadius(8)
     }
 }
 
 #Preview {
-    VStack(spacing: 24) {
+    VStack {
         VerticalCardView(
-            model: NewsModel.init(
-                id: 1,
-                title: "Global Summit on Climate Change: Historic Agreement Reached",
-                authors: .init(),
-                imageUrl: "https://www.nasa.gov/wp-content/uploads/2025/06/nasa-astronaut-nicole-ayers-on-iss-june-25-advisory.jpg",
-                publishedAt: .now,
-                summary: ""
-            )
+            model: .mock(id: 1)
         )
         VerticalCardView(
-            model: NewsModel.init(
-                id: 1,
-                title: "Global Summit on Climate Change: Historic Agreement Reached",
-                authors: .init(),
-                imageUrl: "https://www.nasa.gov/wp-content/uploads/2025/06/nasa-astronaut-nicole-ayers-on-iss-june-25-advisory.jpg",
-                publishedAt: .now,
-                summary: ""
-            )
-        )
-        VerticalCardView(
-            model: NewsModel.init(
-                id: 1,
-                title: "Global Summit on Climate Change: Historic Agreement Reached",
-                authors: .init(),
-                imageUrl: "https://www.nasa.gov/wp-content/uploads/2025/06/nasa-astronaut-nicole-ayers-on-iss-june-25-advisory.jpg",
-                publishedAt: .now,
-                summary: ""
-            )
-        )
-        VerticalCardView(
-            model: NewsModel.init(
-                id: 1,
-                title: "Global Summit on Climate Change: Historic Agreement Reached",
-                authors: .init(),
-                imageUrl: "https://www.nasa.gov/wp-content/uploads/2025/06/nasa-astronaut-nicole-ayers-on-iss-june-25-advisory.jpg",
-                publishedAt: .now,
-                summary: ""
-            )
+            model: .mock(id: 2)
         )
     }
     .padding()

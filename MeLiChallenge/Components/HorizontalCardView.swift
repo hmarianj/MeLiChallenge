@@ -11,33 +11,48 @@ import SwiftUI
 struct HorizontalCardView: View {
     var model: NewsModel
 
-    // TODO: check paddings and spacings
     var body: some View {
         VStack(spacing: 16) {
-            ImageArticleView(model: model, style: ImageArticleStyle.horizontalCard)
-            TitleArticleView(model: model, style: TitleArticleStyle.titleMedium)
+            tagView
+            TitleArticleView(model: model, style: TitleArticleStyle.titleSmall, color: .white)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            Spacer()
             HStack {
-                AuthorsView(model: model)
                 Spacer()
-                DateArticleView(model: model)
+                DateArticleView(
+                    model: model,
+                    color: .grayLight,
+                    fontWeight: .semibold
+                )
             }
         }
-        .frame(width: 240, height: 260)
+        .frame(width: 140, height: 160)
         .padding(12)
-        .background(Color.ligthBlue)
+        .background(.blueMedium)
         .cornerRadius(10)
     }
 }
 
+private extension HorizontalCardView {
+    var tagView: some View {
+        Text(model.newsSite)
+            .font(.system(.caption, weight: .semibold))
+            .foregroundStyle(.blueMedium)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 4)
+            .background(.white)
+            .cornerRadius(12)
+            .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
 #Preview {
-    HorizontalCardView(
-        model: NewsModel.init(
-            id: 1,
-            title: "Global Summit on Climate Change: Historic Agreement Reached",
-            authors: .init(),
-            imageUrl: "https://www.nasa.gov/wp-content/uploads/2025/06/nasa-astronaut-nicole-ayers-on-iss-june-25-advisory.jpg",
-            publishedAt: .now,
-            summary: ""
+    HStack {
+        HorizontalCardView(
+            model: .mock(id: 1)
+            )
+        HorizontalCardView(
+            model: .mock(id: 2)
         )
-    )
+    }
 }

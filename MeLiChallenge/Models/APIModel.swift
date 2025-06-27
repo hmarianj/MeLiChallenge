@@ -19,6 +19,7 @@ struct NewsModel: Codable, Hashable, Identifiable {
     let imageUrl: String
     let publishedAt: Date
     let summary: String
+    let newsSite: String
     
     // Given there are models with the same id, this identifier disambiguates.
     var uniqueIdentifier: String {
@@ -37,7 +38,8 @@ extension NewsModel {
         authors: [Author] = [.init(name: "Mock Author")],
         imageUrl: String = "https://www.nasa.gov/wp-content/uploads/2025/06/nasa-astronaut-nicole-ayers-on-iss-june-25-advisory.jpg",
         publishedAt: Date = .now,
-        summary: String = "Some summary"
+        summary: String = "Some summary",
+        newsSite: String = "Some site"
     ) -> NewsModel {
         NewsModel(
             id: id,
@@ -45,7 +47,8 @@ extension NewsModel {
             authors: authors,
             imageUrl: imageUrl,
             publishedAt: publishedAt,
-            summary: summary
+            summary: summary,
+            newsSite: newsSite
         )
     }
 }

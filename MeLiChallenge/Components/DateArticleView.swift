@@ -10,10 +10,13 @@ import SwiftUI
 
 struct DateArticleView: View {
     var model: NewsModel
+    var color: Color
+    var fontWeight: Font.Weight?
     
     var body: some View {
         Text(model.publishedAt.formatted(date: .abbreviated, time: .omitted))
-            .font(.caption)
-            .foregroundStyle(.gray)
+            .font(.system(.caption, weight: fontWeight))
+            .foregroundStyle(color)
+            .frame(maxWidth: .infinity, alignment: .trailing)
     }
 }

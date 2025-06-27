@@ -11,11 +11,14 @@ import SwiftUI
 struct TitleArticleView: View {
     var model: NewsModel
     var style: TitleArticleStyle
+    var color: Color
     
     var body: some View {
         Text(model.title)
             .font(style.font)
             .multilineTextAlignment(.leading)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .foregroundStyle(color)
     }
 }
 
@@ -29,9 +32,9 @@ enum TitleArticleStyle {
         case .titleLarge:
             return .system(.title, weight: .semibold)
         case .titleMedium:
-            return .system(.title3, weight: .semibold)
+            return .system(.title2, weight: .semibold)
         case .titleSmall:
-            return .system(.headline)
+            return .system(.callout, weight: .semibold)
         }
     }
 }

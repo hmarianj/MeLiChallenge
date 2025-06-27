@@ -34,6 +34,7 @@ private extension HomeScreen {
     @ViewBuilder
     var reportsSection: some View {
         if !isSearching {
+            titleSectionView(title: "Reports")
             ReportsCarousel(onReportTap: { report in
                 viewModel.navigationPath.append(.newsDetail(report))
             })
@@ -44,10 +45,10 @@ private extension HomeScreen {
     var articlesSection: some View {
         if viewModel.isFirstLoading {
             loadingView
-        } else if let news = viewModel.loadedNews {
-            loadedView(news: news)
         } else if viewModel.error != nil {
             errorView
+        } else if let news = viewModel.loadedNews {
+            loadedView(news: news)
         } else {
             EmptyView()
         }
@@ -62,24 +63,29 @@ private extension HomeScreen {
         .redacted(reason: .placeholder) // Skeleton loading
     }
     
+    func titleSectionView(title: String) -> some View {
+        Text(title)
+            .font(.system(.title2, weight: .semibold))
+            .padding(.vertical, 8)
+            .padding(.horizontal, 16)
+            .frame(maxWidth: .infinity, alignment: .leading)
+    }
+    
     @ViewBuilder
     func loadedView(news: [NewsModel]) -> some View {
         if news.isEmpty {
-            // TODO: Empty State
             Text("No results")
         } else {
             LazyVStack(spacing: 8) {
                 if !isSearching {
-                    Text("Articles")
-                        .font(.system(.title2, weight: .semibold))
-                        .padding()
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                    titleSectionView(title: "Articles")
                 }
                 ForEach(news, id: \.uniqueIdentifier) { newsModel in
                     Button {
                         viewModel.navigationPath.append(.newsDetail(newsModel))
                     } label: {
                         VerticalCardView(model: newsModel)
+                            .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
                     Divider()
@@ -98,8 +104,11 @@ private extension HomeScreen {
     }
     
     var errorView: some View {
-        // TODO: UI + Retry
-        Text("error")
+        ErrorView {
+            Task {
+                await viewModel.search(query: viewModel.searchText)
+            }
+        }
     }
 }
 

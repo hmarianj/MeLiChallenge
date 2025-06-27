@@ -20,6 +20,7 @@ struct ImageArticleView: View {
                 image
                     .resizable()
                     .aspectRatio(contentMode: style.contentMode)
+                    .cornerRadius(style.cornerRadius)
             } else if state.error != nil {
                 Color.gray
             } else {
@@ -34,13 +35,12 @@ struct ImageArticleView: View {
                     height: style.size.height * UIScreen.main.scale
                 ),
                 unit: .pixels,
-                contentMode: .aspectFill // TODO: Check for horizontal card
+                contentMode: style.contentMode == .fill ? .aspectFill : .aspectFit
             )
         ])
         .priority(.normal)
         .frame(width: style.size.width, height: style.size.height)
         .cornerRadius(style.cornerRadius)
-        
     }
 }
 

@@ -16,6 +16,7 @@ struct MeLiChallengeApp: App {
     var body: some Scene {
         WindowGroup {
             HomeScreen()
+                .dynamicTypeSize(.xSmall ... .accessibility1)
         }
     }
 }

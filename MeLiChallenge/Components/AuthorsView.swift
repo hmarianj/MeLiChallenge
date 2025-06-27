@@ -16,7 +16,7 @@ struct AuthorsView: View {
             ForEach(model.authors, id: \.self) { author in
                 Text(author.name)
                     .font(.subheadline)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(.gray)
             }
         }
     }
