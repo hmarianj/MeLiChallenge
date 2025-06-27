@@ -75,7 +75,7 @@ Challenge Técnico Mobile para MercadoLibre
 
 ### Loading State + Error State
 
-| Loading | Error |
+| Load State | Error State |
 | - | - |
 |![loading-light](/images/LoadingView.png)|![error-light](/images/LMErrorView.png)|
 
