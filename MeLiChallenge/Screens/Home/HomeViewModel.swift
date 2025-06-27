@@ -27,18 +27,22 @@ final class HomeViewModel: ObservableObject {
     init(searchService: SearchService = SpaceNewsSearchService()) {
         self.searchService = searchService
         setUpSubscribers()
+        // Search without a query when the view model is instantiated.
         Task { [weak self] in
             await self?.search(query: nil)
         }
     }
     
+    // True if there are more pages to load from the backend.
     var hasMorePages: Bool {
         guard let loadedNews else { return false }
         return loadedNews.count < totalCount
     }
     
+    // Search the articles for the given query from the backend.
     func search(query: String?) async {
         guard !isFirstLoading else { return }
+        // Reset the current state when a new search is performed.
         isFirstLoading = true
         error = nil
         currentOffset = 0
@@ -48,8 +52,8 @@ final class HomeViewModel: ObservableObject {
         do {
             let result = try await searchService.search(query: query, size: pageSize, offset: currentOffset)
             loadedNews = result.results
-            totalCount = result.count
-            currentOffset += result.results.count
+            totalCount = result.count // Update the total count of articles (necessary for pagination)
+            currentOffset += result.results.count // Update the pagination offset
         } catch {
             self.error = error
         }
@@ -57,6 +61,7 @@ final class HomeViewModel: ObservableObject {
         isFirstLoading = false
     }
     
+    // Pagination handling mechanism
     func loadNextPageIfNeeded() async {
         guard !isLoadingNextPage, hasMorePages else {
             return
@@ -67,12 +72,14 @@ final class HomeViewModel: ObservableObject {
 }
 
 private extension HomeViewModel {
+    // Only start a new search after the search text has changed
+    // (with a 1 second debouncer to avoid multiple requests to the backend)
     func setUpSubscribers() {
         $searchText
             .debounce(for: .seconds(1), scheduler: RunLoop.main)
             .removeDuplicates()
             .dropFirst()
-            .sink { [weak self] newValue in
+            .sink { [weak self] newValue in // Use [weak self] to avoid memory leaks
                 Task { [weak self] in
                     await self?.search(query: newValue)
                 }
@@ -86,8 +93,8 @@ private extension HomeViewModel {
         
         do {
             let result = try await searchService.search(query: searchText, size: pageSize, offset: currentOffset)
-            loadedNews?.append(contentsOf: result.results)
-            currentOffset += result.results.count
+            loadedNews?.append(contentsOf: result.results) // Append the new result to the current articles loaded
+            currentOffset += result.results.count // Update the pagination offset
         } catch {
             self.error = error
         }

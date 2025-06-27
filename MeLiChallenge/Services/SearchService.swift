@@ -1,10 +1,12 @@
 import Foundation
 
+// Protocol to enable Dependency Injection.
 protocol SearchService {
     func search(query: String?, size: Int, offset: Int) async throws -> SearchResult
 }
 
 struct SpaceNewsSearchService: SearchService {
+    // Production backend implementation of the SearchService protocol
     func search(query: String?, size: Int, offset: Int) async throws -> SearchResult {
         try await HTTPClient.shared.execute(
             urlString: "https://api.spaceflightnewsapi.net/v4/articles/",

@@ -7,6 +7,8 @@
 
 import Foundation
 
+// Model Representation of the Backend Information.
+
 struct SearchResult: Codable {
     let count: Int
     let results: [NewsModel]
@@ -30,6 +32,8 @@ struct NewsModel: Codable, Hashable, Identifiable {
 struct Author: Codable, Equatable, Hashable {
     let name: String
 }
+
+// Mocks
 
 extension NewsModel {
     static func mock(

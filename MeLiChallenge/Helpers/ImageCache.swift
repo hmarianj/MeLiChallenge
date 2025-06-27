@@ -8,6 +8,9 @@
 import Nuke
 
 /// Configures the cache for the images using Nuke.
+/// This is important to improve the User Experience.
+/// Each image only loads once, and then is cached.
+/// The scrolling becomes faster.
 func configureImageCache() {
     let pipeline = ImagePipeline {
         let dataCache = try? DataCache(name: "marian.MeLiChallenge")

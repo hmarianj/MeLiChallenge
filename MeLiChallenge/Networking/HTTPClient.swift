@@ -1,5 +1,7 @@
 import Foundation
 
+// HTTP implementation
+// Use to call backend endpoints.
 final class HTTPClient {
     static let shared = HTTPClient()
     var jsonDecoder: JSONDecoder = JSONDecoder()

@@ -27,7 +27,7 @@ struct ImageArticleView: View {
                 ProgressView()
             }
         }
-        // Resize image to improve render time
+        // Resize image to improve render time (Using Nuke's helper modifiers)
         .processors([
             ImageProcessors.Resize(
                 size: CGSize(
