@@ -5,6 +5,8 @@
 //  Created by MH on 26/06/2025.
 //
 
+import Foundation
+
 protocol ReportService {
     func getReports() async throws -> SearchResult
 }

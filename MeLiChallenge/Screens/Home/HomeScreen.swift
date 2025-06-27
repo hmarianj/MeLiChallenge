@@ -34,7 +34,6 @@ private extension HomeScreen {
     @ViewBuilder
     var reportsSection: some View {
         if !isSearching {
-            titleSectionView(title: "Reports")
             ReportsCarousel(
                 onReportTap: { report in
                     viewModel.navigationPath.append(.newsDetail(report))
@@ -65,14 +64,6 @@ private extension HomeScreen {
         .redacted(reason: .placeholder) // Skeleton loading
     }
     
-    func titleSectionView(title: String) -> some View {
-        Text(title)
-            .font(.system(.title2, weight: .semibold))
-            .padding(.vertical, 8)
-            .padding(.horizontal, 16)
-            .frame(maxWidth: .infinity, alignment: .leading)
-    }
-    
     @ViewBuilder
     func loadedView(news: [NewsModel]) -> some View {
         if news.isEmpty {
@@ -80,7 +71,7 @@ private extension HomeScreen {
         } else {
             LazyVStack(spacing: 8) {
                 if !isSearching {
-                    titleSectionView(title: "Articles")
+                    SectionTitleView(title: "Articles")
                 }
                 ForEach(news, id: \.uniqueIdentifier) { newsModel in
                     Button {

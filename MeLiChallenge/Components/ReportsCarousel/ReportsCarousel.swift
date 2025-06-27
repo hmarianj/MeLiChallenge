@@ -42,21 +42,24 @@ struct ReportsCarousel: View {
         if reports.isEmpty {
             EmptyView()
         } else {
-            ScrollView(.horizontal) {
-                LazyHStack(spacing: 12) {
-                    ForEach(reports, id: \.uniqueIdentifier) { report in
-                        Button {
-                            onReportTap(report)
-                        } label: {
-                            HorizontalCardView(model: report)
+            VStack(spacing: 8) {
+                SectionTitleView(title: "Reports")
+                ScrollView(.horizontal) {
+                    LazyHStack(spacing: 12) {
+                        ForEach(reports, id: \.uniqueIdentifier) { report in
+                            Button {
+                                onReportTap(report)
+                            } label: {
+                                HorizontalCardView(model: report)
+                            }
+                            .buttonStyle(.plain)
                         }
-                        .buttonStyle(.plain)
+                        .accessibilityHint("Double tap to open")
                     }
-                    .accessibilityHint("Double tap to open")
+                    .padding(.horizontal)
                 }
-                .padding(.horizontal)
+                .scrollIndicators(.hidden)
             }
-            .scrollIndicators(.hidden)
         }
     }
 }

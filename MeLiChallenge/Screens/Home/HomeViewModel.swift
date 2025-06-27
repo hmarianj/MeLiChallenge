@@ -27,8 +27,8 @@ final class HomeViewModel: ObservableObject {
     init(searchService: SearchService = SpaceNewsSearchService()) {
         self.searchService = searchService
         setUpSubscribers()
-        Task {
-            await self.search(query: nil)
+        Task { [weak self] in
+            await self?.search(query: nil)
         }
     }
     
@@ -73,9 +73,8 @@ private extension HomeViewModel {
             .removeDuplicates()
             .dropFirst()
             .sink { [weak self] newValue in
-                guard let self else { return }
-                Task {
-                    await self.search(query: newValue)
+                Task { [weak self] in
+                    await self?.search(query: newValue)
                 }
             }
             .store(in: &cancellables)
