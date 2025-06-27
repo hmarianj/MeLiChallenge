@@ -14,7 +14,7 @@ extension Data {
               var prettyPrintedString = String(data: data, encoding: .utf8) else {
             return ""
         }
-
+        
         prettyPrintedString = prettyPrintedString.replacingOccurrences(of: "\\/", with: "/")
         return prettyPrintedString as NSString
     }

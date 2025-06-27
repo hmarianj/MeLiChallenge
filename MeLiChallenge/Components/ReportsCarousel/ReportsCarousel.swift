@@ -52,6 +52,7 @@ struct ReportsCarousel: View {
                         }
                         .buttonStyle(.plain)
                     }
+                    .accessibilityHint("Double tap to open")
                 }
                 .padding(.horizontal)
             }

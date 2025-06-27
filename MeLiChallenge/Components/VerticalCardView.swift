@@ -14,10 +14,17 @@ struct VerticalCardView: View {
     var body: some View {
         VStack(spacing: 12) {
             HStack(alignment: .top, spacing: 16) {
-                ImageArticleView(model: model, style: ImageArticleStyle.verticalCard)
+                ImageArticleView(
+                    model: model,
+                    style: ImageArticleStyle.verticalCard
+                )
                 VStack(alignment: .leading, spacing: 6) {
-                    TitleArticleView(model: model, style: TitleArticleStyle.titleSmall, color: .blackText)
-                        .lineLimit(3)
+                    TitleArticleView(
+                        model: model,
+                        style: TitleArticleStyle.titleSmall,
+                        color: .blackText
+                    )
+                    .lineLimit(3)
                     Spacer()
                     HStack(alignment: .center) {
                         AuthorsView(model: model)
@@ -43,4 +50,3 @@ struct VerticalCardView: View {
     }
     .padding()
 }
-

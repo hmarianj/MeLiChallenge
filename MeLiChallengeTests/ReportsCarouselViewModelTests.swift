@@ -36,7 +36,7 @@ final class ReportsCarouselViewModelTests: XCTestCase {
 
 struct ReportsServiceMock: ReportService {
     var throwsError: Error?
-
+    
     func getReports() async throws -> SearchResult {
         if let throwsError {
             throw throwsError

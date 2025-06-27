@@ -84,7 +84,7 @@ private extension HomeViewModel {
     func loadNextPage() async {
         isLoadingNextPage = true
         defer { isLoadingNextPage = false }
-
+        
         do {
             let result = try await searchService.search(query: searchText, size: pageSize, offset: currentOffset)
             loadedNews?.append(contentsOf: result.results)

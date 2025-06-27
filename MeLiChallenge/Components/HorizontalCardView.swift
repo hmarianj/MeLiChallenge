@@ -10,12 +10,16 @@ import SwiftUI
 
 struct HorizontalCardView: View {
     var model: NewsModel
-
+    
     var body: some View {
         VStack(spacing: 16) {
             tagView
-            TitleArticleView(model: model, style: TitleArticleStyle.titleSmall, color: .white)
-                .frame(maxWidth: .infinity, alignment: .leading)
+            TitleArticleView(
+                model: model,
+                style: TitleArticleStyle.titleSmall,
+                color: .white
+            )
+            .frame(maxWidth: .infinity, alignment: .leading)
             Spacer()
             HStack {
                 Spacer()
@@ -50,7 +54,7 @@ private extension HorizontalCardView {
     HStack {
         HorizontalCardView(
             model: .mock(id: 1)
-            )
+        )
         HorizontalCardView(
             model: .mock(id: 2)
         )

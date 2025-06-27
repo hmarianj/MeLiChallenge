@@ -37,7 +37,7 @@ final class HomeViewModelTests: XCTestCase {
 
 struct SearchServiceMock: SearchService {
     var throwsError: Error?
-
+    
     func search(query: String?, size: Int, offset: Int) async throws -> SearchResult {
         if let throwsError {
             throw throwsError

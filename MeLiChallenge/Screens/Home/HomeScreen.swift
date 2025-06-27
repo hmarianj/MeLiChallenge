@@ -35,9 +35,11 @@ private extension HomeScreen {
     var reportsSection: some View {
         if !isSearching {
             titleSectionView(title: "Reports")
-            ReportsCarousel(onReportTap: { report in
-                viewModel.navigationPath.append(.newsDetail(report))
-            })
+            ReportsCarousel(
+                onReportTap: { report in
+                    viewModel.navigationPath.append(.newsDetail(report))
+                }
+            )
         }
     }
     
@@ -88,6 +90,7 @@ private extension HomeScreen {
                             .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
+                    .accessibilityHint("Double tap to open")
                     Divider()
                 }
                 .padding(.horizontal, 16)

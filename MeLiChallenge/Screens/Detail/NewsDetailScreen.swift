@@ -14,10 +14,17 @@ struct NewsDetailScreen: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 12) {
-                ImageArticleView(model: model, style: ImageArticleStyle.detailsCard)
+                ImageArticleView(
+                    model: model,
+                    style: ImageArticleStyle.detailsCard
+                )
                 VStack(spacing: 12) {
                     DateArticleView(model: model, color: .gray)
-                    TitleArticleView(model: model, style: TitleArticleStyle.titleMedium, color: .blackText)
+                    TitleArticleView(
+                        model: model,
+                        style: TitleArticleStyle.titleMedium,
+                        color: .blackText
+                    )
                     AuthorsView(model: model)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     summaryView
@@ -58,6 +65,8 @@ private extension NewsDetailScreen {
                 .background(.grayDark)
                 .clipShape(.circle)
         }
+        .accessibilityLabel("Back button")
+        .accessibilityHint("Double tap to back")
     }
     
 }

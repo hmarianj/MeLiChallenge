@@ -8,7 +8,7 @@ final class HTTPClient {
         jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
         jsonDecoder.dateDecodingStrategy = .iso8601
     }
-
+    
     /// Executes a request asynchronously and returns a response, or throws an error.
     func execute<Response: Decodable>(
         urlString: String,
@@ -25,7 +25,7 @@ final class HTTPClient {
             for: request,
             delegate: nil
         )
-
+        
         guard let response = response as? HTTPURLResponse else {
             throw Errors.noResponse
         }
@@ -35,14 +35,14 @@ final class HTTPClient {
         URL: \(request.url?.absoluteString ?? "")
         JSON: \(data.prettyPrintedJSONString)
         """)
-
+        
         switch response.statusCode {
         case 200...299:
             let decodedResponse = try jsonDecoder.decode(
                 responseType,
                 from: data
             )
-
+            
             return decodedResponse
             
         case 401:
@@ -51,7 +51,7 @@ final class HTTPClient {
             throw Errors.unexpectedStatusCode
         }
     }
-
+    
     private func urlRequest(
         urlString: String,
         method: HttpMethod,
@@ -61,7 +61,7 @@ final class HTTPClient {
             fatalError("Invalid URL")
         }
         var request = URLRequest(url: url)
-
+        
         switch method {
         case .post(let data), .put(let data):
             request.httpBody = data
@@ -75,7 +75,7 @@ final class HTTPClient {
         default:
             break
         }
-
+        
         request.allHTTPHeaderFields = headers
         request.httpMethod = method.name
         return request
@@ -93,7 +93,7 @@ enum HttpMethod: Equatable {
     case put(Data?)
     case post(Data?)
     case patch
-
+    
     var name: String {
         switch self {
         case .get: return "GET"
