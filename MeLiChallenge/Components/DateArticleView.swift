@@ -17,6 +17,5 @@ struct DateArticleView: View {
         Text(model.publishedAt.formatted(date: .abbreviated, time: .omitted))
             .font(.system(.caption, weight: fontWeight))
             .foregroundStyle(color)
-            .frame(maxWidth: .infinity, alignment: .trailing)
     }
 }

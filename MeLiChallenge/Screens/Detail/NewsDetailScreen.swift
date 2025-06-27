@@ -20,6 +20,7 @@ struct NewsDetailScreen: View {
                 )
                 VStack(spacing: 12) {
                     DateArticleView(model: model, color: .gray)
+                        .frame(maxWidth: .infinity, alignment: .trailing)
                     TitleArticleView(
                         model: model,
                         style: TitleArticleStyle.titleMedium,

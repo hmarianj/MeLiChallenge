@@ -17,6 +17,8 @@ struct AuthorsView: View {
                 Text(author.name)
                     .font(.subheadline)
                     .foregroundColor(.gray)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.5)
             }
         }
     }
