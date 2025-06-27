@@ -22,6 +22,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		EC1456C62E0EEB4600BF3D35 /* MeLiChallenge.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = MeLiChallenge.xctestplan; sourceTree = "<group>"; };
 		ECDE24E72E0C6BFA006AE26A /* MeLiChallenge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MeLiChallenge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ECDE24F42E0C6BFC006AE26A /* MeLiChallengeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MeLiChallengeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -82,6 +83,7 @@
 		ECDE24DE2E0C6BFA006AE26A = {
 			isa = PBXGroup;
 			children = (
+				EC1456C62E0EEB4600BF3D35 /* MeLiChallenge.xctestplan */,
 				ECDE24E92E0C6BFA006AE26A /* MeLiChallenge */,
 				ECDE24F72E0C6BFC006AE26A /* MeLiChallengeTests */,
 				ECD0CE4C2E0DC03600F3F320 /* Frameworks */,

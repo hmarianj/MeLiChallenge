@@ -1,0 +1,28 @@
+{
+  "configurations" : [
+    {
+      "id" : "007651EA-3D96-4230-ADD2-5A530C3C90C7",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:MeLiChallenge.xcodeproj",
+      "identifier" : "ECDE24E62E0C6BFA006AE26A",
+      "name" : "MeLiChallenge"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:MeLiChallenge.xcodeproj",
+        "identifier" : "ECDE24F32E0C6BFC006AE26A",
+        "name" : "MeLiChallengeTests"
+      }
+    }
+  ],
+  "version" : 1
+}
